@@ -1,14 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="com.sharkozp.galleryapplication.fragments.ItemFragment">
 
     <ImageView
         android:id="@+id/itemImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:adjustViewBounds="true" />
 
-</LinearLayout>
+</ScrollView>

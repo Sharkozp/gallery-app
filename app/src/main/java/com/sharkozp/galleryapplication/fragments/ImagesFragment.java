@@ -11,10 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.sharkozp.galleryapplication.GalleryActivity;
+import com.sharkozp.galleryapplication.R;
 import com.sharkozp.galleryapplication.system.AsyncResponse;
 import com.sharkozp.galleryapplication.system.Constants;
 import com.sharkozp.galleryapplication.system.ImageAdapter;
-import com.sharkozp.galleryapplication.R;
 
 import java.util.List;
 
@@ -39,7 +40,8 @@ public class ImagesFragment extends MainFragment implements AsyncResponse {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //load all images
-        loadImages(this);
+        GalleryActivity activity = (GalleryActivity) getActivity();
+        activity.loadImages(this);
     }
 
     @Override
