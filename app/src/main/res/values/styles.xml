@@ -20,4 +20,9 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="MenuItemStyle">
+        <item name="android:background">@drawable/fab_background</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

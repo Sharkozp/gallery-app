@@ -6,6 +6,6 @@ package com.sharkozp.galleryapplication.system;
 public class Constants {
     public static final String RECYCLER_STATE = "recycler_state";
     public static final String SELECTED_ITEM = "selected_item";
-    public static final String IMAGES_FRAGMENT_TAG = "ImagesFragment";
-    public static final String ITEM_FRAGMENT_TAG = "ItemFragment";
+    public static final String SELECTED_PATH = "selected_path";
+    public static final String ACTIVE_FRAGMENT_TAG = "ActiveFragment";
 }

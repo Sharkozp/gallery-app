@@ -1,10 +1,10 @@
 package com.sharkozp.galleryapplication.system;
 
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Created by oleksandr on 12/26/15.
  */
 public interface AsyncResponse {
-    void processFinish(List<String> images);
+    void processFinish(LinkedList<String> images);
 }

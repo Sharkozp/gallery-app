@@ -2,6 +2,11 @@
     <string name="app_name">Gallery Application</string>
 
     <string name="title_activity_item">ItemActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="choose_action">Choose action</string>
+    <string name="delete_action">Delete</string>
+    <string name="delete_dialog_title">Delete Image?</string>
+    <string name="delete_image_button">Delete Image</string>
+    <string name="delete_dialog_text">Do you really want to delete image?</string>
+    <string name="empty_text">You don\'t have any images on this device</string>
+
 </resources>

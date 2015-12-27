@@ -1,31 +1,33 @@
 package com.sharkozp.galleryapplication.system;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.graphics.Point;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.sharkozp.galleryapplication.ItemActivity;
+import com.sharkozp.galleryapplication.MainActivity;
 import com.sharkozp.galleryapplication.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Created by oleksandr on 12/26/15.
  */
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
     private final Context context;
-    private FragmentManager fragmentManager;
-    private List<String> imagesPath;
+    private final MainActivity activity;
+    private LinkedList<String> imagesPath;
     private int width = 0;
 
 
@@ -43,9 +45,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ImageAdapter(Context context, List<String> imagesPath) {
+    public ImageAdapter(Context context, LinkedList<String> imagesPath) {
         this.context = context;
-        this.fragmentManager = ((Activity) context).getFragmentManager();
+        this.activity = (MainActivity) context;
         this.imagesPath = imagesPath;
     }
 
@@ -66,17 +68,21 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent itemActivityIntent = new Intent(context, ItemActivity.class);
-                itemActivityIntent.putExtra(Constants.SELECTED_ITEM, position);
-                context.startActivity(itemActivityIntent);
+                activity.clicked(position);
             }
         });
 
-        if (imgFile.exists()) {
-            //set width half of screen
-            int halfSize = getWidth() / 2;
-            Picasso.with(context).load(imgFile).resize(halfSize, halfSize).centerCrop().into(view);
-        }
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                createDialog(position);
+                return false;
+            }
+        });
+
+        //set width half of screen
+        int halfSize = getWidth() / 2;
+        Picasso.with(context).load(imgFile).resize(halfSize, halfSize).centerCrop().into(view);
     }
 
     // Return the size of your imagesPath (invoked by the layout manager)
@@ -101,5 +107,56 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             width += sizeInPixel * 2;
         }
         return width;
+    }
+
+    private void createDialog(final int position) {
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+        //  builderSingle.setIcon(R.drawable.ic_launcher);
+        builderSingle.setTitle(R.string.choose_action);
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item);
+        arrayAdapter.add(context.getString(R.string.delete_action));
+        builderSingle.setNegativeButton(
+                android.R.string.cancel,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        builderSingle.setAdapter(
+                arrayAdapter,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AlertDialog.Builder builderInner = new AlertDialog.Builder(context);
+                        builderInner.setMessage(R.string.delete_dialog_text);
+                        builderInner.setTitle(R.string.delete_dialog_title);
+                        builderInner.setPositiveButton(
+                                android.R.string.ok,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        MainActivity activity = (MainActivity) context;
+                                        activity.removeImage(position);
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                        builderInner.setNegativeButton(
+                                android.R.string.cancel,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        AppCompatDialog builderInnerAlert = builderInner.create();
+                        builderInnerAlert.show();
+                    }
+                });
+        AppCompatDialog builderSingleAlert = builderSingle.create();
+        builderSingleAlert.show();
     }
 }
